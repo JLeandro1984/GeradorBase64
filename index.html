@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 Tool PRO</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>🖼️ Base64 Image Tool</h1>
+      <button id="themeToggle">🌙</button>
+    </header>
+
+    <main class="grid">
+      <!-- IMAGE TO BASE64 -->
+      <section class="card">
+        <h2>📤 Imagem → Base64</h2>
+        <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg, image/webp, image/gif, image/bmp, image/svg+xml" multiple>
+        <div id="previewContainer" class="preview-container"></div>
+        <textarea id="base64Output" readonly placeholder="Base64 será exibido aqui..."></textarea>
+        <div class="actions">
+          <button id="copyBase64">Copiar</button>
+          <button id="downloadBase64">Baixar TXT</button>
+        </div>
+      </section>
+
+      <!-- BASE64 TO IMAGE -->
+      <section class="card">
+        <h2>📥 Base64 → Imagem</h2>
+        <textarea id="base64Input" placeholder="Cole o Base64 da imagem..."></textarea>
+        <div id="error" class="error"></div>
+        <img id="outputImage" class="preview" />
+        <button id="renderImage">Renderizar</button>
+      </section>
+
+      <!-- BYTE ARRAY -->
+      <section class="card">
+        <h2>🔢 Byte Array</h2>
+        <textarea id="byteInput" placeholder="Base64..."></textarea>
+        <button id="byteBtn">Converter</button>
+        <pre id="byteOutput"></pre>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

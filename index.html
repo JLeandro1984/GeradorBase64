@@ -3,44 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Base64 Tool PRO</title>
+  <meta name="description" content="Ferramenta profissional para converter imagens em Base64, renderizar imagens e gerar byte arrays.">
+  <title>Pixel64 Studio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="page-shell"></div>
+
   <div class="app">
-    <header class="header">
-      <h1>🖼️ Base64 Image Tool</h1>
-      <button id="themeToggle">🌙</button>
+    <header class="hero">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="brand-mark__frame"></span>
+          <span class="brand-mark__pixel"></span>
+        </div>
+        <div>
+          <p class="eyebrow">Conversor visual de dados</p>
+          <h1>Pixel64 Studio</h1>
+          <p class="hero-copy">Converta imagens para Base64, renderize saídas e gere byte arrays em uma interface única, rápida e limpa.</p>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <div class="hero-badge">
+          <span class="hero-badge__dot"></span>
+          Sem dependências externas
+        </div>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Alternar tema">
+          <span id="themeToggleIcon" aria-hidden="true">◐</span>
+          <span id="themeToggleLabel">Tema</span>
+        </button>
+      </div>
     </header>
 
     <main class="grid">
-      <!-- IMAGE TO BASE64 -->
-      <section class="card">
-        <h2>📤 Imagem → Base64</h2>
-        <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg, image/webp, image/gif, image/bmp, image/svg+xml" multiple>
-        <div id="previewContainer" class="preview-container"></div>
-        <textarea id="base64Output" readonly placeholder="Base64 será exibido aqui..."></textarea>
+      <section class="panel panel--wide">
+        <div class="panel__header">
+          <div>
+            <p class="panel__eyebrow">Entrada de arquivos</p>
+            <h2>Arquivo para Base64</h2>
+          </div>
+          <p class="panel__hint">Aceita PNG, JPEG, WEBP, GIF, BMP, SVG e PDF.</p>
+        </div>
+
+        <label class="dropzone" for="fileInput">
+          <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.webp,.gif,.bmp,.svg,.pdf,image/png,image/jpeg,image/webp,image/gif,image/bmp,image/svg+xml,application/pdf" multiple>
+          <span class="dropzone__title">Selecione um ou mais arquivos</span>
+          <span class="dropzone__description">Ou arraste os arquivos para esta área.</span>
+        </label>
+
+        <div class="status-row">
+          <span id="fileSummary" class="status-pill">Nenhum arquivo carregado</span>
+          <span id="copyStatus" class="inline-feedback" aria-live="polite"></span>
+        </div>
+
+        <div id="previewContainer" class="preview-grid" aria-live="polite"></div>
+
+        <section id="base64ResultPanel" class="result-panel result-panel--compact" aria-label="Resultado Base64">
+          <div class="result-panel__header">
+            <div>
+              <span class="field__label">Saída Base64</span>
+              <p id="base64Meta" class="result-panel__meta">Nenhum conteúdo gerado</p>
+            </div>
+            <div class="result-panel__actions">
+              <label class="select-field" for="outputMode">
+                <span class="select-field__label">Formato</span>
+                <select id="outputMode" class="select-field__control">
+                  <option value="raw">Base64 puro</option>
+                  <option value="data-url">Data URL</option>
+                </select>
+              </label>
+              <button id="toggleOutputSize" class="button button--ghost button--small" type="button">Expandir</button>
+            </div>
+          </div>
+          <textarea id="base64Output" readonly placeholder="O conteúdo convertido será exibido aqui."></textarea>
+        </section>
+
         <div class="actions">
-          <button id="copyBase64">Copiar</button>
-          <button id="downloadBase64">Baixar TXT</button>
+          <button id="copyBase64" class="button button--primary" type="button" disabled>Copiar</button>
+          <button id="downloadBase64" class="button button--secondary" type="button" disabled>Baixar TXT</button>
+          <button id="clearFiles" class="button button--ghost" type="button">Limpar</button>
         </div>
       </section>
 
-      <!-- BASE64 TO IMAGE -->
-      <section class="card">
-        <h2>📥 Base64 → Imagem</h2>
-        <textarea id="base64Input" placeholder="Cole o Base64 da imagem..."></textarea>
-        <div id="error" class="error"></div>
-        <img id="outputImage" class="preview" />
-        <button id="renderImage">Renderizar</button>
+      <section class="panel">
+        <div class="panel__header">
+          <div>
+            <p class="panel__eyebrow">Visualização</p>
+            <h2>Base64 para Imagem</h2>
+          </div>
+          <p class="panel__hint">Aceita Data URL ou Base64 puro.</p>
+        </div>
+
+        <label class="field">
+          <span class="field__label">Conteúdo Base64</span>
+          <textarea id="base64Input" placeholder="Cole aqui o Base64 da imagem."></textarea>
+        </label>
+
+        <div id="error" class="feedback feedback--error" aria-live="polite"></div>
+
+        <div class="image-stage">
+          <img id="outputImage" class="image-stage__preview" alt="Pré-visualização gerada a partir do Base64">
+          <div id="imagePlaceholder" class="image-stage__placeholder">A pré-visualização aparecerá aqui.</div>
+        </div>
+
+        <div class="actions">
+          <button id="renderImage" class="button button--primary" type="button">Renderizar</button>
+          <button id="clearRender" class="button button--ghost" type="button">Limpar</button>
+        </div>
       </section>
 
-      <!-- BYTE ARRAY -->
-      <section class="card">
-        <h2>🔢 Byte Array</h2>
-        <textarea id="byteInput" placeholder="Base64..."></textarea>
-        <button id="byteBtn">Converter</button>
-        <pre id="byteOutput"></pre>
+      <section class="panel">
+        <div class="panel__header">
+          <div>
+            <p class="panel__eyebrow">Estrutura de bytes</p>
+            <h2>Base64 para Byte Array</h2>
+          </div>
+          <p class="panel__hint">Ideal para integrações, testes e serialização.</p>
+        </div>
+
+        <label class="field">
+          <span class="field__label">Entrada Base64</span>
+          <textarea id="byteInput" placeholder="Cole o Base64 ou Data URL."></textarea>
+        </label>
+
+        <div class="actions">
+          <button id="byteBtn" class="button button--primary" type="button">Converter</button>
+          <button id="clearBytes" class="button button--ghost" type="button">Limpar</button>
+        </div>
+
+        <label class="field">
+          <span class="field__label">Saída</span>
+          <pre id="byteOutput" class="code-block">[]</pre>
+        </label>
       </section>
     </main>
   </div>
